@@ -1,0 +1,75 @@
+{% load flotte_filter %} 
+
+{% load helper_filter %}
+
+{% load humanize %} 
+
+{% for obj in lst %}
+	<tr title="">
+        <td align="center">{{ obj.debut }}</td>
+        <td align="center">{{ obj.fin }}</td>
+        <td><a class="js-update-entity" href="#" data-url="{% url 'detail_flotte_crud' pk_flotte=obj.pk %}" data-toggle="tooltip" data-placement="top" title="Cliquez ici pour voir les détails" ><span class="fa fa-edit text-primary"></span>&nbsp;Détails</a> </td>
+        <td><a class="js-update-entity" href="#" data-url="{% url 'allocation_flotte_crud' pk_flotte=obj.pk %}"><span class="fa fa-edit text-primary"></span>&nbsp;Allocation de véhicules</a></td>
+        <td align="center">{{ obj.get_total }} €</td>
+        <td align="center">
+                {{ obj.get_statut_display }}
+                <span>
+                        {% if obj.statut == 0 %}
+                                {% if obj.get_qte_total < 10 %}
+                                        <div align="center">
+                                                <h5 style="color: #ca224b;"><b>Vérifiez les détails</b></h5>
+                                        </div> 
+                                {% else %}
+                                        {% if request.user|is_inst_client %}
+                                        <form action="{% url  'charge_location' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="number" hidden value="{{obj.id}}" id="obj_id" name="obj_id">
+                                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                                        data-key="{{ key }}"
+                                                        data-label="Payer par carte"
+                                                        data-description="Paiement"
+                                                        data-amount="{{obj.get_total|get_stripe_price}}"
+                                                        data-currency="eur"
+                                                        data-locale="fr">
+                                                </script>
+                                        </form>
+                                        <a class="btn btn-sm btn-primary js-update-entity" href="#" data-url="{% url 'virement' pk_flotte=obj.pk %}" data-toggle="tooltip" data-placement="top" title="Payer par virement" style="margin-top: 5px;">Payer par virement</a> 
+                                        {% else %}
+                                        <form action="{% url  'virement_recu' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="number" hidden value="{{obj.id}}" id="obj_id" name="obj_id">
+                                                <button class="btn" style="background-color: #454243; color:#fff">Virement reçu</button>
+                                        </form>
+                                        {% endif %}
+                                {% endif %}
+                        {% elif obj.statut == 1 %}
+                                {% if request.user|is_inst_client %}
+                                <form action="{% url  'refund_location' %}" method="post">
+                                  {% csrf_token %}
+                                  <input type="number" hidden value="{{obj.id}}" id="obj_id" name="obj_id">
+                                  <button class="btn" style="background-color: #454243; color:#fff">Annuler</button>
+                                </form>
+                                {% else %}
+                                <form action="{% url  'terminer_location' %}" method="post">
+                                  {% csrf_token %}
+                                  <input type="number" hidden value="{{obj.id}}" id="obj_id" name="obj_id">
+                                  <button class="btn" style="background-color: #454243; color:#fff">Terminer</button>
+                                </form>
+                                {% endif %}
+                        {% elif obj.statut == 2 %}
+                                <div align="center">
+                                    <h5><b>{{obj.get_total|get_stripe_refund_price}} € remboursée</b></h5>
+                                </div>
+                        {% else %}
+                                <div align="center">
+                                    <h5></h5>
+                                </div>
+                        {% endif %}
+                        {% if obj.statut >= 1 %}
+                                  <a href="{% url 'view_location_pdf_invoice' pk=obj.id %}" name="pdf-attachement" value="PDF" title="Facture" class="btn" style="background-color: #454243; color:#fff; margin-top: 10px;"><i class="fa fa-file-pdf-o" style="color:#ca224b;margin-right: 5px;"></i>Facture</a>
+                        {% endif %}
+                </span>
+        </td>
+        <td align="center" class="hideColumnIds">{{ obj.id }}</td><!-- ID de l'objet caché-->
+	</tr>
+{% endfor %}

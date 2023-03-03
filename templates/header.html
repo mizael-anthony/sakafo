@@ -1,0 +1,83 @@
+{% load static %}
+{% load helper_filter %}
+
+<header class="app-header navbar">
+    <!-- <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button" style="color: #ffffff;">☰</button> -->
+    <a class="navbar-brand" href="{% url 'index' %}" style="margin-top: 5px;"></a>
+    <!-- <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" style="color: #ffffff;">☰</button> -->
+
+    <ul class="nav navbar-nav ml-auto">
+        {% if request.user.is_authenticated %}
+            <li class="nav-item" style="margin-right:20px !important;">
+                {% if request.user|is_inst_client %}
+                <a class="nav-link" href="{% url 'reservation_demande' %}" style="color: #454243; font-size: medium;">Réservation à la demande</a>
+                {% else %}
+                <a class="nav-link" href="{% url 'reservation_demande_list_driver' %}" style="color: #454243; font-size: medium;">Réservation à la demande</a>
+                {%endif%}
+            </li>
+            <li class="nav-item" style="margin-right:20px !important;">
+                <!-- <a class="nav-link" href="{% url 'reservation_reguliere' %}" style="color: #454243; font-size: medium;">Réservation de lignes régulières</a> -->
+                <a class="nav-link" href="#" style="color: #454243; font-size: medium;">Réservation de lignes régulières</a>
+            </li>
+            <li class="nav-item" style="margin-right:20px !important;">
+                {% if request.user|is_inst_client %}
+                <a class="nav-link" href="{% url 'livraison' %}" style="color: #454243; font-size: medium;">Livraisons</a>
+                {% else %}
+                <a class="nav-link" href="{% url 'livraison_list_driver' %}" style="color: #454243; font-size: medium;">Livraisons</a>
+                {%endif%}
+            </li>
+            {% if request.user|is_inst_client or request.user.is_superuser %}
+            <li class="nav-item" style="margin-right:20px !important;">
+                <a class="nav-link" href="{% url 'flotte_list' %}" style="color: #454243; font-size: medium;">Location de flottes</a>
+            </li>
+            {% endif %}
+        {% else %}
+            <li class="nav-item" style="margin-right:20px !important;">
+                <a class="nav-link" href="register_client" style="color: #454243; font-size: medium;">Réservation à la demande</a>
+            </li>
+            <li class="nav-item" style="margin-right:20px !important;">
+                <a class="nav-link" href="register_client" style="color: #454243; font-size: medium;">Réservation de lignes régulières</a>
+            </li>
+            <li class="nav-item" style="margin-right:20px !important;">
+                <a class="nav-link" href="register_client" style="color: #454243; font-size: medium;">Livraisons</a>
+            </li>
+            <li class="nav-item" style="margin-right:20px !important;">
+                <a class="nav-link" href="register_client" style="color: #454243; font-size: medium;">Location de flottes</a>
+            </li>
+        {% endif %}
+        <li class="nav-item dropdown">
+            {% if request.user.is_authenticated %}
+            <a class="nav-link text-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <span class="d-md-down-none text-white">
+                    <img src="{{ user | get_user_avatar }}" class="photo_profile"/> &nbsp;{{ user | show_user_name | capfirst }} 
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                
+                <a class="dropdown-item" href="/logout"><i class="fa fa-lock"></i>Déconnexion</a>
+                
+            </div>
+            {% else %}
+                <a style="padding-top: 5px; padding-bottom: 5px; background-color:#ca224b; color: #fff;" href="login" class="btn btn-sm">Connexion</a>
+            {% endif %}
+            {% if request.user.is_superuser %}
+            <div class="dropdown-menu dropdown-menu-right">
+                
+                <a class="dropdown-item" href="{% url 'index_admin' %}"><i class="fa fa-wrench"></i>Administration</a>
+                
+                <a class="dropdown-item" href="/logout"><i class="fa fa-lock"></i>Déconnexion</a>
+                
+            </div>
+            {% endif %}
+        </li>
+    </ul>
+    {% if request.session.ct_pk  %}
+        <button class="navbar-toggler aside-menu-toggler" type="button" title="Messages">
+            <!--☰-->
+            <!--MESSAGE-->
+            <i class="fa fa-commenting" style="color: yellow"></i>
+        </button>
+    {% else %}
+        &nbsp;&nbsp;
+    {% endif %}
+</header>

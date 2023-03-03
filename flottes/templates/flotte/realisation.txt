@@ -1,0 +1,11 @@
+{% autoescape off %}
+Bonjour,
+
+Vous faites partie de la sélection pour la réalisation de la location de flottes
+
+Du {{ debut }} au {{ fin }} pour le client {{ client }}.
+
+Cordialement,
+Administrateur
+
+{% endautoescape %}

@@ -1,0 +1,133 @@
+
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        const mb_source = document.querySelector("#mapbox-directions-origin-input .mapboxgl-ctrl-geocoder input");
+        const mb_destination = document.querySelector("#mapbox-directions-destination-input .mapboxgl-ctrl-geocoder input");
+        const sp_adresse_depart = document.getElementById('id_adresse_depart');
+        const sp_adresse_arrivee = document.getElementById('id_adresse_arrivee');
+        const sp_prix = document.getElementById('id_prix');
+        const mb_distance = document.querySelector(".mapbox-directions-route-summary h1");
+        sp_prix.value = Math.round(parseInt(mb_distance.textContent) * parseFloat('{{ tarif.km_cost|stringformat:"f" }}') * parseFloat('{{ tarif.livraison_coef|stringformat:"f" }}') + parseFloat('{{ tarif.depot_cost|stringformat:"f" }}'));
+        sp_adresse_depart.textContent = mb_source.value;
+        sp_adresse_arrivee.textContent = mb_destination.value;
+    });
+    $('input[id=id_aller_retour]').change(function() {
+        const sp_prix = document.getElementById('id_prix');
+        const mb_distance = document.querySelector(".mapbox-directions-route-summary h1");
+        sp_prix.value = Math.round(parseInt(mb_distance.textContent) * parseFloat('{{ tarif.km_cost|stringformat:"f" }}') * parseFloat('{{ tarif.livraison_coef|stringformat:"f" }}') + parseFloat('{{ tarif.depot_cost|stringformat:"f" }}'));
+        if ($(this).is(':checked')) {
+            sp_prix.value = sp_prix.value * 2;
+        } 
+    });
+  //Date d'embauche en datepicker
+  Helpers.DatePicker('date');
+
+  //Définir spcécifiquement la taille du popup modal
+  $('.modal-dialog').css('max-width', '900px');
+  $('.modal-dialog').css('margin-top', '200px');
+  
+</script>
+{% endblock %}
+
+{% load widget_tweaks %}
+
+<div class="container">
+  <div class="row">
+      <div class="form-group col-sm-3">
+          <i class="required_field">*</i>
+          <label for="{{ form.adresse_depart.id_for_label }}">{{ form.adresse_depart.label_tag }}</label>  
+          {% render_field form.adresse_depart  class+="form-control" %}
+      </div>
+      <div class="form-group col-sm-3">
+          <i class="required_field">*</i>
+          <label for="{{ form.adresse_arrivee.id_for_label }}">{{ form.adresse_arrivee.label_tag }}</label>  
+          {% render_field form.adresse_arrivee  class+="form-control" %}
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-sm-3">
+          <i class="required_field">*</i>
+          <label for="{{ form.prix.id_for_label }}">{{ form.prix.label_tag }}</label>
+          {% render_field form.prix  class+="form-control" %}
+      </div>
+      <div class="col-sm-3" style="margin-top: 30px;">
+        <div class="form-check">
+          <label class="form-check-label">
+            {% render_field form.aller_retour class+="form-check-input" %}
+            <span class="form-check-sign" style="margin-left: 20px;">{{ form.aller_retour.label }}</span>
+          </label>
+        </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="form-group col-sm-3">
+        <i class="required_field">*</i>
+        <label for="{{ form.date.id_for_label }}">{{ form.date.label_tag }}</label>
+        {% render_field form.date  class+="form-control" %}
+      </div>
+      
+      <div class="form-group col-sm-3">
+        <i class="required_field">*</i>
+        <label for="{{ form.depart.id_for_label }}">{{ form.depart.label_tag }}</label>
+        {% render_field form.depart  class+="form-control" %}
+      </div>
+  </div>
+  <div class="row">   
+    <div class="col-sm-3" style="margin-top: 30px;">
+        <div class="form-check">
+          <label class="form-check-label">
+            {% render_field form.colis_1 class+="form-check-input" %}
+            <span class="form-check-sign" style="margin-left: 20px;">{{ form.colis_1.label }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group col-sm-3">
+        <label for="{{ form.weight_1.id_for_label }}">{{ form.weight_1.label_tag }}</label>
+        {% render_field form.weight_1  class+="form-control" %}
+      </div>
+  </div>
+  <div class="row">   
+    <div class="col-sm-3" style="margin-top: 30px;">
+        <div class="form-check">
+          <label class="form-check-label">
+            {% render_field form.colis_2 class+="form-check-input" %}
+            <span class="form-check-sign" style="margin-left: 20px;">{{ form.colis_2.label }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group col-sm-3">
+        <label for="{{ form.weight_2.id_for_label }}">{{ form.weight_2.label_tag }}</label>
+        {% render_field form.weight_2  class+="form-control" %}
+      </div>
+  </div>
+  <div class="row">   
+    <div class="col-sm-3" style="margin-top: 30px;">
+        <div class="form-check">
+          <label class="form-check-label">
+            {% render_field form.colis_3 class+="form-check-input" %}
+            <span class="form-check-sign" style="margin-left: 20px;">{{ form.colis_3.label }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group col-sm-3">
+        <label for="{{ form.weight_3.id_for_label }}">{{ form.weight_3.label_tag }}</label>
+        {% render_field form.weight_3  class+="form-control" %}
+      </div>
+  </div>
+  <div class="row">   
+    <div class="col-sm-3" style="margin-top: 30px;">
+        <div class="form-check">
+          <label class="form-check-label">
+            {% render_field form.colis_4 class+="form-check-input" %}
+            <span class="form-check-sign" style="margin-left: 20px;">{{ form.colis_4.label }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group col-sm-3">
+        <label for="{{ form.weight_4.id_for_label }}">{{ form.weight_4.label_tag }}</label>
+        {% render_field form.weight_4  class+="form-control" %}
+      </div>
+  </div>
+</div>
+

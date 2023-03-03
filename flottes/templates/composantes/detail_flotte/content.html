@@ -1,0 +1,30 @@
+{% for det in details %}
+    <tr>
+        <td><div>{{ det.get_type_display }}</div></td> 
+        <td><div align="center">{{ det.quantite }}</div></td> 
+        <td><div align="right">{{ det.prix }} €</div></td> 
+        <td class="text-center">
+            <button type="button" title="Supprimer details"
+                enabled='enabled' 
+                class="btn btn-danger btn-sm js-delete-entity"
+                onclick="DeleteDetails('{{ obj.id }}','{{ det.id }}')">
+                <span class="fa fa-trash"></span> <!--Suppr-->
+            </button>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="6" class="text-center"><h4 class="text-danger">Pas de details</h></td>
+    </tr>
+{% endfor %}
+<tr>
+    <td><div align="center"><b>TOTAL</b></div></td>
+    <td><div align="center">{{ obj.get_qte_total }}</div></td>
+    <td><div align="right">{{ obj.get_total }} €</div></td>
+  </tr>
+{% if obj.get_qte_total < 10 %}
+<tr>
+    <td colspan="4"><div id="message_fade" class="float-left text-white bg bg-danger" align="center">La location doit contenir au moins 10 véhicules</div></td>
+</tr>
+{% endif %}
+  

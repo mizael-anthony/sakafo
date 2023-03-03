@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-6 col-sm-6">
+        <div class="card " style="background-color: rgb(220, 219, 219);">
+            <div class="card-header">
+                <form action="{% url 'dashboard' %}" method="post">
+                    {% csrf_token %}
+                    <label for="du">Du:</label>
+                    <input type="date" id="du" name="du" required="True" value="{{ du }}">
+                    <label for="au">Au:</label>
+                    <input type="date" id="au" name="au" required="True" value="{{ au }}">
+                    <input type="submit" class="btn btn-primary btn-round ml-auto"
+                        value="Filtrer"
+                        style="padding:5px; cursor: pointer;">
+                </form> 
+            </div>
+            <div class="card-body pb-0">
+                <canvas id="pie-chart" width="500" height="260"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-sm-6">
+
+    </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script>
+
+    var config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data }},
+          backgroundColor: [
+            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+          ],
+          label: 'Population'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+
+  </script>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+{% endblock %}

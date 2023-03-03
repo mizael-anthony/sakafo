@@ -1,0 +1,11 @@
+{% autoescape off %}
+Bonjour,
+
+Une nouvelle réservation à la demande ({{ type }}) a été créée par M/Mme {{ client }} en date du {{ date }}.
+
+Veuillez allouer une voiture à cette réservation.
+
+Cordialement,
+Administrateur
+
+{% endautoescape %}

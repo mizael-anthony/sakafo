@@ -1,0 +1,11 @@
+{% autoescape off %}
+Bonjour,
+
+Une nouvelle livraison a été créée par M/Mme {{ client }} en date du {{ date }}.
+
+Veuillez allouer une voiture à cette livraison.
+
+Cordialement,
+Administrateur
+
+{% endautoescape %}

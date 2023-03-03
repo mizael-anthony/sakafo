@@ -1,0 +1,11 @@
+{% autoescape off %}
+Bonjour,
+
+Une nouvelle location de flottes nécessite une allocation de véhicules.
+
+Location faite par {{ client }} à partir du {{ debut }} au {{ fin }}.
+
+Cordialement,
+Administrateur
+
+{% endautoescape %}

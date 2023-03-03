@@ -1,0 +1,203 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="I-MOBILITY">
+    <meta name="author" content="IMT">
+    <meta name="keyword" content="IMT, Madagascar">
+    <link rel="shortcut icon" href="{% static '/img/favicon.ico' %}">
+
+    <title>I-MOBILITY</title>
+
+    <!-- Core CSS - Include with every page -->
+    <!-- Icons -->
+    <link href="{% static '/css/font-awesome.css' %}" rel="stylesheet">
+    <link href="{% static '/css/simple-line-icons.css' %}" rel="stylesheet">
+    
+    <!-- Main styles for this application -->
+    <link href="{% static '/css/style.css' %}" rel="stylesheet"> 
+    
+    <!-- jquery ui , auto complete -->
+    <link href="{% static '/css/jquery-ui.min.css' %}" rel="stylesheet"> 
+    
+    <!-- jquery datatable -->
+    <link href="{% static '/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css/buttons.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+
+    <script src=https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js></script>
+    <link rel="stylesheet" href=https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css type="text/css" />
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.0/mapbox-gl-draw.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.0/mapbox-gl-draw.css' type='text/css'/>
+
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/mapbox-polyline/1.1.1/polyline.js></script>
+    
+    <link href="{% static '/css/notyf.min.css' %}" rel="stylesheet">
+    
+    <!--Time and Time-->
+    <link href="{% static '/css/jquery.timepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css/bootstrap-datepicker.css' %}" rel="stylesheet">
+
+    <link href="{% static '/css//jquery-confirm.min.css' %}" rel="stylesheet">
+
+    <style type="text/css">
+        /*Fred 2018.02.27 : garder le style de certains champs de saisie comme éditable en mode readonly*/ 
+        input[readonly].normal{
+          background-color:transparent;
+          border: 1;
+          font-size: 1em;
+        }
+        /* #map { position:relative; top:60px; left:700px; width:700px; height: 350px} */
+        #map { width:100%; height: 640px}
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden sidebar-hidden" oncontextmenu="return false;"><!--DÉSACTIVER LE CONTEXT-MENU DU BROWSER BY FRED-->
+    {% include 'header.html' %} 
+
+    <div class="app-body">        
+        <!-- Menu gauche -->
+        {% include 'sidebar.html' %}
+        
+        <!-- Main content -->
+        <main class="main">
+            <!-- Breadcrumb sitmemap-->
+            <div class="container-fluid">
+                <div class="animated fadeIn">                   
+                   {% block content %}{% endblock %}
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </main>
+
+        <!-- Menu droite côté user -->
+        <aside class="aside-menu">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active js-create-entity" data-toggle="tab" href="#message" data-url="" role="tab" title=""><i class="icon-speech"></i></a>
+                </li>
+                <li class="nav-item">
+                   <span class="nav-link text-success"></span>
+                </li>
+            </ul>
+
+            <!-- Tab Messages (Notification) -->
+            <div class="tab-content">
+                <div class="tab-pane p-3 active" id="messages" role="tabpanel">
+                    {% block message %}
+                        <!--MESSAGE SIMPLE-->
+                        {% include 'aside.html' %}
+                    {% endblock %}
+                </div>
+            </div>
+        </aside>
+    </div>
+    {% include 'modal.html' %}
+    {% include 'footer.html' %}
+    
+    <!-- Bootstrap and necessary plugins -->
+    <script src = "{% static 'js/library/jquery.min.js' %}"></script>
+    <script src = "{% static 'js/library/popper.min.js' %}"></script>
+    <script src = "{% static 'js/library/bootstrap.min.js' %}"></script>   
+    <!-- <script src = "{% static 'js/library/pace.min.js' %}"></script> -->
+    <!-- Plugins and scripts required by all views -->
+    <script src = "{% static 'js/library/screenfull.min.js' %}"></script>    
+       <!--  app scripts -->
+    <script src = "{% static 'js/library/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/library/notyf.min.js' %}"></script>
+    
+    <!--  app scripts -->
+    <script src = "{% static 'js/jquery.cookie.js' %}"></script>
+    <script src = "{% static 'js/app.js' %}"></script>
+    <script src = "{% static 'js/notify.js' %}"></script>
+    <script src = "https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src = "{% static 'js/app_js.js' %}"></script>
+
+    <!-- jquery datatable -->
+    <script src = "{% static 'js/library/jquery.dataTables.min.js' %}"></script>
+
+    <script src = "{% static 'js/library/dataTables.buttons.min.js' %}"></script>
+    <script src = "{% static 'js/library/buttons.flash.min.js' %}"></script>
+    <script src = "{% static 'js/library/jszip.min.js' %}"></script>
+    <script src = "{% static 'js/library/pdfmake.min.js' %}"></script>
+    <script src = "{% static 'js/library/vfs_fonts.js' %}"></script>
+    <script src = "{% static 'js/library/buttons.html5.min.js' %}"></script>
+    <script src = "{% static 'js/library/buttons.print.min.js' %}"></script>
+    
+    <script src = "{% static 'js/library/dataTables.bootstrap.min.js' %}"></script>
+    <script src = "{% static 'js/library/dataTables.fixedHeader.min.js' %}"></script>
+    <script src = "{% static 'js/library/dataTables.responsive.min.js' %}"></script>
+    <script src = "{% static 'js/library/responsive.bootstrap.min.js' %}"></script>
+
+    <script src = "{% static 'js/library/jquery.timepicker.min.js' %}"></script>
+    <script src = "{% static 'js/library/bootstrap-datepicker.js' %}"></script>
+
+    <script src = "{% static 'js/library/jquery-confirm.min.js' %}"></script>
+    
+    <!--  helpers generic scripts -->
+    <script src = "{% static 'js/helpers.js' %}"></script>
+    
+    <!--  helpers context menu scripts -->
+    <script src = "{% static 'js/helpers_context_menu.js' %}"></script>
+    
+    
+
+    
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZmFraHIiLCJhIjoiY2pseXc0djE0MHBibzN2b2h4MzVoZjk4aSJ9.ImbyLtfsfSsR_yyBluR8yQ';
+        var map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/mapbox/streets-v9', //hosted style id
+            center: [2.298308,48.880326], // starting position
+            zoom: 13, // starting zoom
+            minZoom: 5 // keep it local
+        });
+
+        // Directions
+        // const directions = new MapboxDirections({
+        // accessToken: mapboxgl.accessToken,
+        // unit: 'metric',
+        // profile: 'mapbox/driving',
+        // alternatives: false,
+        // geometries: 'geojson',
+        // controls: { instructions: false },
+        // language: 'fr',
+        // flyTo: false
+        // });
+        const nav = new mapboxgl.NavigationControl()
+        map.addControl(nav)
+
+
+        var directions = new MapboxDirections({
+         accessToken: mapboxgl.accessToken,
+         profile: 'mapbox/driving',
+         unit: 'metric',
+        })
+        map.addControl(directions, 'top-left');
+
+    </script>
+    {% block javascript %}
+        
+        
+    {% endblock %}
+</body>
+</html>

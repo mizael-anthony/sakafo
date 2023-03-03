@@ -1,0 +1,15 @@
+{% autoescape off %}
+Bonjour,
+
+Une nouvelle réservation à la demande ({{ type }}) à réaliser.
+
+Partant de {{ depart }} vers {{ arrivee }}.
+
+C'est un voyage en {{ aller }}.
+
+Le {{ date }} à {{ heure }}, vous aurez {{ passager }} passager(s) à transférer.
+
+Cordialement,
+Administrateur
+
+{% endautoescape %}

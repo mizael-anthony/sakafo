@@ -1,0 +1,40 @@
+{% block javascript %}
+  <script type="text/javascript">
+
+    // Date de début location
+    Helpers.DatePicker('id_debut');
+    // Date de fin location
+    Helpers.DatePicker('id_fin');
+
+    // Set Current date
+    $("#id_debut").datepicker("setDate", Helpers.GetDateTodayFr());
+    $("#id_fin").datepicker("setDate", Helpers.GetDateTodayFr());
+
+    //Définir spcécifiquement la taille du popup modal
+    $('.modal-dialog').css('max-width', '800px');
+    $('.modal-dialog').css('margin-top', '200px');
+  </script>
+{% endblock %}
+
+{% load widget_tweaks %}
+
+{% load flotte_filter %}
+
+<div class="container">
+    <div class="row">
+        <div class="form-group col-sm-3">
+            <i class="required_field">*</i>
+            <label for="{{ form.debut.id_for_label }}">{{ form.debut.label_tag }}</label>
+            {% render_field form.debut  class+="form-control" %}
+            <p></p>
+        </div>
+
+        <div class="form-group col-sm-3">
+            <i class="required_field">*</i>
+            <label for="{{ form.fin.id_for_label }}">{{ form.fin.label_tag }}</label>
+            {% render_field form.fin  class+="form-control" %}
+            <p></p>
+        </div>
+    </div>
+
+</div>
